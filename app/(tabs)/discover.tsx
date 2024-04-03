@@ -1,8 +1,9 @@
-import { Button, StyleSheet, TouchableOpacity } from 'react-native';
-import EditScreenInfo from '@/components/EditScreenInfo';
+import { View as RNView, StyleSheet, TouchableOpacity, Text as RNText } from 'react-native';
+import EditScreenInfo from '@/components/EditScreenInfo'; // 确保路径正确
 import { Text, View } from '@/components/Themed';
 import { Link } from 'expo-router';
-import React from 'react';
+
+
 
 
 // 功能按钮组件
@@ -15,7 +16,7 @@ const FeatureTile = ({ title, onPress }) => {
 };
 
 // Discover页面主组件
-const DiscoverScreen = () => {
+const DiscoverScreen = ({ navigation }) => { // 从props中解构navigation
   return (
     <View style={styles.container}>
       <FeatureTile title="翻译" onPress={() => navigation.navigate('Translation')} />

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import DiscoverScreen from './screens/DiscoverScreen';
+import DiscoverScreen from './app/(tabs)/discover'; // 确保路径正确
 import TranslationScreen from './screens/TranslationScreen';
 
 const Stack = createNativeStackNavigator();
