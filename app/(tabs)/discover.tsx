@@ -18,7 +18,7 @@ const FeatureTile = ({ title, onPress }) => {
 const DiscoverScreen = () => {
   return (
     <View style={styles.container}>
-      <FeatureTile title="翻译" onPress={() => console.log('翻译')} />
+      <FeatureTile title="翻译" onPress={() => navigation.navigate('Translation')} />
       <FeatureTile title="地图" onPress={() => console.log('地图')} />
       <FeatureTile title="天气" onPress={() => console.log('天气')} />
       <FeatureTile title="货币转换" onPress={() => console.log('货币转换')} />
