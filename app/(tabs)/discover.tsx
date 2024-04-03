@@ -1,35 +1,57 @@
-import { Button, StyleSheet } from 'react-native';
-
+import { Button, StyleSheet, TouchableOpacity } from 'react-native';
 import EditScreenInfo from '@/components/EditScreenInfo';
 import { Text, View } from '@/components/Themed';
 import { Link } from 'expo-router';
+import React from 'react';
 
-export default function TabOneScreen() {
+
+// 功能按钮组件
+const FeatureTile = ({ title, onPress }) => {
+  return (
+    <TouchableOpacity style={styles.tile} onPress={onPress}>
+      <Text style={styles.tileText}>{title}</Text>
+    </TouchableOpacity>
+  );
+};
+
+// Discover页面主组件
+const DiscoverScreen = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Discover</Text>
-      <Text>Discover today's destination</Text>
-      {/* <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" /> */}
-      {/* <EditScreenInfo path="app/(tabs)/discover.tsx" /> */}
-      <Link href={'/info'}>TEST IMAGE </Link>
-      {/* <Button onPress={() => console.log('---->')} title='test debug' /> */}
+      <FeatureTile title="翻译" onPress={() => console.log('翻译')} />
+      <FeatureTile title="地图" onPress={() => console.log('地图')} />
+      <FeatureTile title="天气" onPress={() => console.log('天气')} />
+      <FeatureTile title="货币转换" onPress={() => console.log('货币转换')} />
+      {/* 根据需要添加更多功能按钮 */}
     </View>
   );
-}
+};
 
-const styles = StyleSheet.create ({
+// 样式表
+const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    padding: 10,
   },
-  title: {
-    fontSize: 20,
+  tile: {
+    backgroundColor: '#007bff',
+    padding: 20,
+    borderRadius: 10,
+    margin: 10,
+    width: '40%', // 根据需要调整
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+    elevation: 4,
+  },
+  tileText: {
+    color: '#fff',
     fontWeight: 'bold',
   },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-  },
 });
+
+export default DiscoverScreen;
