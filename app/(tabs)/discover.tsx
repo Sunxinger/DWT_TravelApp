@@ -4,8 +4,6 @@ import { Text, View } from '@/components/Themed';
 import { Link } from 'expo-router';
 
 
-
-
 // 功能按钮组件
 const FeatureTile = ({ title, onPress }) => {
   return (
