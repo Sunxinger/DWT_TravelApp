@@ -10,7 +10,7 @@ export default function TabOneScreen() {
       <Link href={'/translate'} style={styles.link}>
         <Text style={styles.linkText}>Translate</Text>
       </Link>
-      <Link href={'/info'} style={styles.link}>
+      <Link href={'/maps'} style={styles.link}>
         <Text style={styles.linkText}>    Maps    </Text>
       </Link>
       {/* 您可以在这里继续添加其他组件和内容 */}

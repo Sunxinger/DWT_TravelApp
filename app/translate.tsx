@@ -35,20 +35,24 @@ const TranslateScreen = () => {
 
   return (
     <View style={styles.container}>
+      {translatedText ? (
+        <View style={styles.resultCard}>
+          <Text style={styles.resultText}>{translatedText}</Text>
+        </View>
+      ) : null}
       <TextInput
         style={styles.input}
         placeholder="Enter text to translate"
         value={text}
         onChangeText={setText}
       />
-      <TouchableOpacity style={styles.button} onPress={translateText}>
+      <TouchableOpacity style={styles.button} onPress={translateText} disabled={isLoading}>
         {isLoading ? (
           <ActivityIndicator color="#FFF" />
         ) : (
           <Text style={styles.buttonText}>Translate</Text>
         )}
       </TouchableOpacity>
-      <Text style={styles.result}>{translatedText}</Text>
     </View>
   );
 };
@@ -57,9 +61,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
-    backgroundColor: '#f5f5f5', // 轻微的背景色
+    justifyContent: 'flex-start', // Adjusted for top alignment
+    paddingTop: 60, // Add padding at the top
+    paddingHorizontal: 20,
+    backgroundColor: '#f5f5f5',
   },
   input: {
     width: '100%',
@@ -85,10 +90,21 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
   },
-  result: {
-    marginTop: 20,
+  resultCard: {
+    marginBottom: 20,
+    width: '100%',
+    padding: 20,
+    backgroundColor: 'white',
+    borderRadius: 5,
+    shadowColor: '#000', // Shadow for iOS
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 1.5,
+    elevation: 3, // Shadow for Android
+  },
+  resultText: {
     fontSize: 18,
-    color: '#333', // 结果文字颜色
+    color: '#333',
   },
 });
 
