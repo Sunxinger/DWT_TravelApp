@@ -1,34 +1,67 @@
-import { StatusBar } from 'expo-status-bar';
-import { Platform, StyleSheet } from 'react-native';
+// TranslateScreen.js
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, TextInput, Button } from 'react-native';
 
-import EditScreenInfo from '@/components/EditScreenInfo';
-import { Text, View } from '@/components/Themed';
+const TranslateScreen = () => {
+  const [text, setText] = useState('');
+  const [translatedText, setTranslatedText] = useState('');
 
-export default function ModalScreen() {
+  const translateText = async () => {
+    // 调用Google翻译API的URL和API密钥（假设）
+    const url = `https://translation.googleapis.com/language/translate/v2?key=AIzaSyB-ROOjVyQT4-RFawmTytDlVmkmma55rTI`;
+    const data = {
+      q: text,
+      source: 'en',
+      target: 'zh',
+    };
+
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      const result = await response.json();
+      setTranslatedText(result.data.translations[0].translatedText);
+    } catch (error) {
+      console.error('Error translating text:', error);
+    }
+  };
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Info</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-  
-      {/* Use a light status bar on iOS to account for the black space above the modal */}
-      <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
+      <TextInput
+        style={styles.input}
+        placeholder="Enter text to translate"
+        value={text}
+        onChangeText={setText}
+      />
+      <Button title="Translate" onPress={translateText} />
+      <Text style={styles.result}>{translatedText}</Text>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    padding: 20,
   },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
+  input: {
+    width: '100%',
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginBottom: 20,
   },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
+  result: {
+    marginTop: 20,
+    fontSize: 18,
   },
 });
+
+export default TranslateScreen;

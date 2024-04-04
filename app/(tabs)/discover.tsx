@@ -1,20 +1,23 @@
-import { StyleSheet } from 'react-native';
+import { Button, StyleSheet } from 'react-native';
 
 import EditScreenInfo from '@/components/EditScreenInfo';
 import { Text, View } from '@/components/Themed';
+import { Link } from 'expo-router';
 
-export default function TabTwoScreen() {
+export default function TabOneScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Me</Text>
-      <Text>User Info</Text>
-      {/* <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="app/(tabs)/me.tsx" /> */}
+      <Text style={styles.title}>Discover</Text>
+      <Text>Discover today's destination</Text>
+      {/* <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" /> */}
+      {/* <EditScreenInfo path="app/(tabs)/discover.tsx" /> */}
+      <Link href={'/info'}>TEST IMAGE </Link>
+      {/* <Button onPress={() => console.log('---->')} title='test debug' /> */}
     </View>
   );
 }
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create ({
   container: {
     flex: 1,
     alignItems: 'center',
