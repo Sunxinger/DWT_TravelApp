@@ -1,20 +1,17 @@
-import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import DiscoverScreen from './app/(tabs)/discover'; // 确保路径正确
-import TranslationScreen from './screens/TranslationScreen';
+import Discover from './app/(tabs)/discover';
+import AnotherPage from './screens/TranslateScreen.js'; // 另一个页面的路径
 
 const Stack = createNativeStackNavigator();
 
 function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Discover">
-        <Stack.Screen name="Discover" component={DiscoverScreen} options={{ title: 'Discover' }} />
-        <Stack.Screen name="Translation" component={TranslationScreen} options={{ title: 'Translation' }} />
+      <Stack.Navigator>
+        <Stack.Screen name="Discover" component={Discover} />
+        <Stack.Screen name="AnotherPage" component={AnotherPage} />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
-
-export default App;
