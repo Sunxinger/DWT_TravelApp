@@ -13,6 +13,9 @@ export default function TabOneScreen() {
       <Link href={'/maps'} style={styles.link}>
         <Text style={styles.linkText}>    Maps    </Text>
       </Link>
+      <Link href={'/maps'} style={styles.link}>
+        <Text style={styles.linkText}>    Maps    </Text>
+      </Link>
       {/* 您可以在这里继续添加其他组件和内容 */}
     </View>
   );

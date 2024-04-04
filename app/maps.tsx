@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Dimensions, TextInput, Button, TouchableOpacity, Text } from 'react-native';
-import MapView, { Region } from 'react-native-maps';
+import { View, StyleSheet, Dimensions, TextInput, TouchableOpacity, Text, Alert, Button } from 'react-native';
+import MapView, { Region, Marker } from 'react-native-maps';
+import * as Location from 'expo-location';
 
 const MapsScreen: React.FC = () => {
   const [region, setRegion] = useState<Region>({
@@ -9,6 +10,7 @@ const MapsScreen: React.FC = () => {
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   });
+  const [userLocation, setUserLocation] = useState<Location.LocationObject | null>(null);
 
   const zoomIn = () => {
     setRegion((prevRegion) => ({
@@ -26,13 +28,40 @@ const MapsScreen: React.FC = () => {
     }));
   };
 
+  const handleLocateUser = async () => {
+    const { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== 'granted') {
+      Alert.alert('Permission to access location was denied');
+      return;
+    }
+
+    const location = await Location.getCurrentPositionAsync({});
+    setUserLocation(location);
+    setRegion({
+      latitude: location.coords.latitude,
+      longitude: location.coords.longitude,
+      latitudeDelta: 0.005,
+      longitudeDelta: 0.005,
+    });
+  };
+
   return (
     <View style={styles.container}>
       <MapView
         style={styles.map}
         region={region}
         onRegionChangeComplete={setRegion}
-      />
+      >
+        {userLocation && (
+          <Marker
+            coordinate={{
+              latitude: userLocation.coords.latitude,
+              longitude: userLocation.coords.longitude,
+            }}
+            title="My Location"
+          />
+        )}
+      </MapView>
       <View style={styles.searchBox}>
         <TextInput placeholder="Search here..." style={styles.input} />
       </View>
@@ -44,6 +73,7 @@ const MapsScreen: React.FC = () => {
           <Text style={styles.zoomText}>-</Text>
         </TouchableOpacity>
       </View>
+      <Button title="Locate Me" onPress={handleLocateUser} />
     </View>
   );
 };
