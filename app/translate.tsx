@@ -1,14 +1,15 @@
-// TranslateScreen.js
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TextInput, Button } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native';
 
 const TranslateScreen = () => {
   const [text, setText] = useState('');
   const [translatedText, setTranslatedText] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const translateText = async () => {
-    // 调用Google翻译API的URL和API密钥（假设）
-    const url = `https://translation.googleapis.com/language/translate/v2?key=YOUR_API_KEY`;
+    setIsLoading(true);
+    // 注意：请替换为您的实际API密钥
+    const url = `https://translation.googleapis.com/language/translate/v2?key=AIzaSyB-ROOjVyQT4-RFawmTytDlVmkmma55rTI`;
     const data = {
       q: text,
       source: 'en',
@@ -27,6 +28,8 @@ const TranslateScreen = () => {
       setTranslatedText(result.data.translations[0].translatedText);
     } catch (error) {
       console.error('Error translating text:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -38,7 +41,13 @@ const TranslateScreen = () => {
         value={text}
         onChangeText={setText}
       />
-      <Button title="Translate" onPress={translateText} />
+      <TouchableOpacity style={styles.button} onPress={translateText}>
+        {isLoading ? (
+          <ActivityIndicator color="#FFF" />
+        ) : (
+          <Text style={styles.buttonText}>Translate</Text>
+        )}
+      </TouchableOpacity>
       <Text style={styles.result}>{translatedText}</Text>
     </View>
   );
@@ -50,17 +59,36 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,
+    backgroundColor: '#f5f5f5', // 轻微的背景色
   },
   input: {
     width: '100%',
-    height: 40,
-    borderColor: 'gray',
+    height: 50,
+    backgroundColor: 'white',
+    borderColor: '#ddd',
     borderWidth: 1,
+    borderRadius: 5,
+    padding: 10,
     marginBottom: 20,
+    fontSize: 16,
+  },
+  button: {
+    width: '100%',
+    backgroundColor: '#007bff',
+    padding: 15,
+    borderRadius: 5,
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  buttonText: {
+    fontSize: 18,
+    color: 'white',
+    fontWeight: 'bold',
   },
   result: {
     marginTop: 20,
     fontSize: 18,
+    color: '#333', // 结果文字颜色
   },
 });
 
