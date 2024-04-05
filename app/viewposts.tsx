@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Button, Alert, Linking } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // 定义日志类型
 interface Post {
   title: string;
   content: string;
-  image?: string; // 图片是可选的
+  image?: string;
 }
 
 const ViewPosts: React.FC = () => {
@@ -17,7 +17,6 @@ const ViewPosts: React.FC = () => {
       try {
         const postsData = await AsyncStorage.getItem('posts');
         if (postsData !== null) {
-          // 使用Post接口确保类型正确
           setPosts(JSON.parse(postsData) as Post[]);
         }
       } catch (error) {
@@ -28,12 +27,26 @@ const ViewPosts: React.FC = () => {
     fetchPosts();
   }, []);
 
+  const deletePost = async (index: number) => {
+    const newPosts = posts.filter((_, i) => i !== index);
+    await AsyncStorage.setItem('posts', JSON.stringify(newPosts));
+    setPosts(newPosts);
+  };
+
+  const sharePost = (post: Post) => {
+    const message = `Check out this post: ${post.title}\n${post.content}`;
+    // 使用Linking API发送短信
+    Linking.openURL(`sms:?body=${encodeURIComponent(message)}`);
+  };
+
   return (
     <ScrollView style={styles.container}>
       {posts.map((post, index) => (
         <View key={index} style={styles.postContainer}>
           <Text style={styles.title}>{post.title}</Text>
           <Text style={styles.content}>{post.content}</Text>
+          <Button title="Delete" onPress={() => deletePost(index)} />
+          <Button title="Share via SMS" onPress={() => sharePost(post)} />
         </View>
       ))}
     </ScrollView>
