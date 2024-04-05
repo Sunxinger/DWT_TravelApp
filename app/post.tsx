@@ -24,16 +24,39 @@ export default function CreateBlogPost({ navigation }) {
     setImage(pickerResult.uri);
   };
 
-  const submitPost = () => {
-    // 这里编写提交逻辑，例如发送到后端API
-    console.log({ title, content, image });
-    // 清空表单，提示用户提交成功
-    setTitle('');
-    setContent('');
-    setImage(null);
-    alert('日志提交成功！');
+  const submitPost = async () => {
+    const postData = {
+      title: title,
+      content: content,
+      image: image, // 假设这里是图片的URI或上传后的URL
+    };
+  
+    try {
+      const response = await fetch('http://localhost:3000/posts', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(postData),
+      });
+  
+      if (response.ok) {
+        console.log('Post submitted successfully');
+        alert('日志提交成功！');
+        // 清空表单
+        setTitle('');
+        setContent('');
+        setImage(null);
+      } else {
+        console.error('Failed to submit post');
+        alert('提交失败，请稍后再试');
+      }
+    } catch (error) {
+      console.error('Error submitting post:', error);
+      alert('提交错误，请检查网络连接并稍后再试');
+    }
   };
-
+  
   return (
     <View style={styles.container}>
       <TextInput
