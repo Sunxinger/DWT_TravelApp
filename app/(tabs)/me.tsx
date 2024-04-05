@@ -10,6 +10,9 @@ export default function TabOneScreen() {
       <Link href={'/post'} style={styles.link}>
         <Text style={styles.linkText}>POST</Text>
       </Link>
+      <Link href={'/viewposts'} style={styles.link}>
+        <Text style={styles.linkText}>VIEW</Text>
+      </Link>
       {/* 您可以在这里继续添加其他组件和内容 */}
     </View>
   );
