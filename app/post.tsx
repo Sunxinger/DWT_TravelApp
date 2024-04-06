@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, StyleSheet, Text, TextInput, View, Image, TouchableOpacity } from 'react-native';
+import { Button, StyleSheet, Text, TextInput, View, Image, TouchableOpacity, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -16,13 +16,17 @@ const CreateBlogPost: React.FC = () => {
   const [content, setContent] = useState<string>('');
   const [image, setImage] = useState<string | null>(null);
 
+  console.log('Component rendering...'); // Debug log
+
   const pickImage = async () => {
+    console.log('Requesting camera permissions...'); // Debug log
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
     if (permissionResult.granted === false) {
       alert("您拒绝了访问相机的请求！");
       return;
     }
 
+    console.log('Launching camera...'); // Debug log
     const pickerResult = await ImagePicker.launchCameraAsync();
     if (pickerResult.cancelled === true) {
       return;
@@ -32,11 +36,12 @@ const CreateBlogPost: React.FC = () => {
   };
 
   const submitPost = async () => {
+    console.log('Submitting post...'); // Debug log
     const newPost: Post = {
       id: Date.now(),
-      title: title,
-      content: content,
-      image: image,
+      title,
+      content,
+      image,
       createdAt: new Date().toISOString(),
     };
 
@@ -46,25 +51,39 @@ const CreateBlogPost: React.FC = () => {
       posts.push(newPost);
       await AsyncStorage.setItem('posts', JSON.stringify(posts));
       
-      alert('日志提交成功！');
+      Alert.alert('日志提交成功！');
       setTitle('');
       setContent('');
       setImage(null);
     } catch (error) {
       console.error('Error saving post:', error);
-      alert('提交错误，请稍后再试');
+      Alert.alert('提交错误，请稍后再试');
     }
   };
 
   return (
     <View style={styles.container}>
-      {/* 省略了输入和按钮部分的代码以简化 */}
+      <TextInput
+        style={styles.input}
+        placeholder="标题"
+        value={title}
+        onChangeText={setTitle}
+      />
+      <TextInput
+        style={[styles.input, styles.contentInput]}
+        placeholder="正文"
+        value={content}
+        onChangeText={setContent}
+        multiline
+      />
+      <Button title="选择图片" onPress={pickImage} />
+      {image && <Image source={{ uri: image }} style={styles.image} />}
+      <TouchableOpacity onPress={submitPost} style={styles.button}>
+        <Text style={styles.buttonText}>提交日志</Text>
+      </TouchableOpacity>
     </View>
   );
 };
-
-export default CreateBlogPost;
-
 
 const styles = StyleSheet.create({
   container: {
@@ -100,3 +119,5 @@ const styles = StyleSheet.create({
     margin: 20,
   },
 });
+
+export default CreateBlogPost;

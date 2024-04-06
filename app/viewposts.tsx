@@ -45,6 +45,9 @@ const ViewPosts: React.FC = () => {
         <View key={index} style={styles.postContainer}>
           <Text style={styles.title}>{post.title}</Text>
           <Text style={styles.content}>{post.content}</Text>
+          <Link href={`/postupdate/${post.id}`} style={styles.link}>
+            <Text style={styles.linkText}>Edit</Text>
+          </Link>
           <Button title="Delete" onPress={() => deletePost(index)} />
           <Button title="Share via SMS" onPress={() => sharePost(post)} />
         </View>
