@@ -1,30 +1,18 @@
 import React from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import ViewPosts from './app/viewposts'; // 确保您有这个文件
-import PostUpdate from './app/postupdate'; // 确保您有这个文件
-import HomeScreen from './app/HomeScreen'; // 假设您也有这个文件
-
-const Stack = createStackNavigator();
+import { View, Text, StyleSheet } from 'react-native';
+import { Router, Route } from 'expo-router';
+import ViewPosts from './app/viewposts';
+import PostUpdate from './app/postupdate';
+import HomeScreen from './app/HomeScreen';
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        {/* 注册 HomeScreen */}
-        <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Home' }} />
-        {/* 注册 ViewPosts */}
-        <Stack.Screen name="ViewPosts" component={ViewPosts} options={{ title: 'View Posts' }} />
-        {/* 注册 PostUpdate */}
-        <Stack.Screen name="PostUpdate" component={PostUpdate} options={{ title: 'Edit Post' }} />
-      </Stack.Navigator>
-      <View style={styles.container}>
-        {/* 保留原有的内容 */}
-        <StatusBar style="auto" />
-      </View>
-    </NavigationContainer>
+    <Router>
+      <Route path="/" component={HomeScreen} />
+      <Route path="/viewposts" component={ViewPosts} />
+      <Route path="/postupdate/:id" component={PostUpdate} />
+      {/* 其他页面的路由 */}
+    </Router>
   );
 }
 

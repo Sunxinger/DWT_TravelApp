@@ -5,7 +5,8 @@ import { useRouting } from 'expo-router';
 
 const PostUpdate = () => {
   const [post, setPost] = useState({ id: '', title: '', content: '' });
-  const { params } = useRouting(); // 获取路由参数
+  const routing = useRouting();
+  const { params } = routing; // 使用 expo-router 的 useRouting 获取路由参数
 
   useEffect(() => {
     const postId = params?.postId;
@@ -13,7 +14,7 @@ const PostUpdate = () => {
     const fetchPost = async () => {
       const storedPosts = await AsyncStorage.getItem('posts');
       const posts = storedPosts ? JSON.parse(storedPosts) : [];
-      const currentPost = posts.find(p => p.id === postId);
+      const currentPost = posts.find(p => p.id.toString() === postId); // 确保 postId 的类型匹配
       if (currentPost) {
         setPost(currentPost);
       }
@@ -31,7 +32,7 @@ const PostUpdate = () => {
       if (postIndex !== -1) {
         posts[postIndex] = post;
         await AsyncStorage.setItem('posts', JSON.stringify(posts));
-        params.goBack(); // 使用 params 中的 goBack 方法返回到之前的屏幕
+        routing.goBack(); // 使用 routing 的 goBack 方法返回到之前的屏幕
       }
     } catch (error) {
       // 错误处理
@@ -58,6 +59,8 @@ const PostUpdate = () => {
     </View>
   );
 };
+
+
 
 const styles = StyleSheet.create({
   container: {
