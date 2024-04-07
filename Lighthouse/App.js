@@ -1,26 +1,21 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { Router, Route } from 'expo-router';
-import ViewPosts from './app/viewposts';
-import PostUpdate from './app/postupdate';
-import HomeScreen from './app/HomeScreen';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import HomeScreen from './app/HomeScreen'; // 首页组件，确保路径正确
+import ViewPosts from './app/viewposts'; // 查看帖子列表的组件，确保路径正确
+import PostUpdate from './app/postupdate'; // 更新帖子的组件，确保路径正确
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <Router>
-      <Route path="/" component={HomeScreen} />
-      <Route path="/viewposts" component={ViewPosts} />
-      <Route path="/postupdate/:id" component={PostUpdate} />
-      {/* 其他页面的路由 */}
-    </Router>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="ViewPosts" component={ViewPosts} options={{ title: 'View Posts' }} />
+        <Stack.Screen name="PostUpdate" component={PostUpdate} options={{ title: 'Update Post' }} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;

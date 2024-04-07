@@ -28,7 +28,7 @@ const CreateBlogPost: React.FC = () => {
 
     console.log('Launching camera...'); // Debug log
     const pickerResult = await ImagePicker.launchCameraAsync();
-    if (pickerResult.cancelled === true) {
+    if (pickerResult.canceled === true) {
       return;
     }
 

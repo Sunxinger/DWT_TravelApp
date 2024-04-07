@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, Button, Alert, Linking } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Link } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
 
 // 定义日志类型
 interface Post {
@@ -13,6 +13,7 @@ interface Post {
 
 const ViewPosts: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
+  const navigation = useNavigation(); // 使用useNavigation钩子
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -44,14 +45,15 @@ const ViewPosts: React.FC = () => {
   return (
     <ScrollView style={styles.container}>
       {posts.map((post, index) => (
-        <View key={post.id} style={styles.postContainer}>
+        <View key={post.id.toString()} style={styles.postContainer}>
           <Text style={styles.title}>{post.title}</Text>
           <Text style={styles.content}>{post.content}</Text>
+          {/* 删除按钮 */}
           <Button title="Delete" onPress={() => deletePost(index)} />
+          {/* 分享按钮 */}
           <Button title="Share via SMS" onPress={() => sharePost(post)} />
-          <Link href={`/postupdate/${post.id}`} style={styles.editButton}>
-            <Text style={styles.editButtonText}>Edit</Text>
-          </Link>
+          {/* 编辑按钮，现在使用useNavigation进行页面跳转 */}
+          <Button title="Edit" onPress={() => navigation.navigate('PostUpdate', { id: post.id })} />
         </View>
       ))}
     </ScrollView>
