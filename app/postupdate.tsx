@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useRoute, useNavigation } from '@react-navigation/native';
+import { useRouting } from 'expo-router';
 
 const PostUpdate = () => {
   const [post, setPost] = useState({ id: '', title: '', content: '' });
-  const route = useRoute();
-  const navigation = useNavigation();
+  const { params } = useRouting(); // 获取路由参数
 
   useEffect(() => {
-    const postId = route.params?.postId;
+    const postId = params?.postId;
     // 从本地存储获取数据并更新状态
     const fetchPost = async () => {
       const storedPosts = await AsyncStorage.getItem('posts');
@@ -21,7 +20,7 @@ const PostUpdate = () => {
     };
 
     fetchPost();
-  }, [route.params?.postId]);
+  }, [params?.postId]);
 
   const handleSave = async () => {
     // 保存逻辑，将更新的 post 保存到 AsyncStorage
@@ -32,7 +31,7 @@ const PostUpdate = () => {
       if (postIndex !== -1) {
         posts[postIndex] = post;
         await AsyncStorage.setItem('posts', JSON.stringify(posts));
-        navigation.goBack(); // 返回到之前的屏幕
+        params.goBack(); // 使用 params 中的 goBack 方法返回到之前的屏幕
       }
     } catch (error) {
       // 错误处理
